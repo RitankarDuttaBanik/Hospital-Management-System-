@@ -78,7 +78,7 @@ exports.getAllpatients = async (req,res,next) => {
 
 exports.getPatientById = async (req,res,next) => {
     try {
-        const patient = await prisma.findUnique({where : {id : Number(req.params.id)}});
+        const patient = await prisma.patient.findUnique({ where : { id :req.params.id}});
          if (!patient) {
             logger.warn({ patientId: req.params.id }, "🚫 Patient not found");
             return res.status(404).json({ error: "Patient not found" });
@@ -91,9 +91,9 @@ exports.getPatientById = async (req,res,next) => {
 
 exports.deletePatient = async (req,res,next) => {
     try {
-        await prisma.patient.delete({where : {id : req.params.id}});
+        await prisma.patient.delete({where : { id : req.params.id}});
         logger.info({ patientId: req.params.id }, "🗑️ Patient deleted");
-        res.json({ message: "Patient deleted" });
+        res.json({ message: "Patient deleted"});
 
     } catch (error) {
         next(error);
@@ -103,7 +103,7 @@ exports.deletePatient = async (req,res,next) => {
 exports.updatePatient = async (req, res, next) => {
   try {
     const patient = await prisma.patient.update({
-      where: { id: Number(req.params.id) },
+      where: { id: req.params.id },
       data: req.body
     });
     logger.info({ patientId: patient.id }, "✏️ Patient updated");

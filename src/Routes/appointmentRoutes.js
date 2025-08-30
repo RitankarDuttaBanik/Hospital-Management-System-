@@ -7,11 +7,12 @@ const { appointmentSchema } = require("../Utils/Validation.js");
 const authMiddleware = require("../Middlewares/AuthMiddleware.js");
 
 
-router.post("/", authMiddleware(["PATIENT"]), validate(appointmentSchema),appointmentController.createappointment);
+router.post("/", authMiddleware(["PATIENT","ADMIN"]), validate(appointmentSchema),appointmentController.createappointment);
 router.delete("/:id", authMiddleware(["PATIENT", "ADMIN"]),appointmentController.cancelappointment);
 router.get("/", authMiddleware(["ADMIN", "DOCTOR", "PATIENT"]),appointmentController.getAllAppointment);
 router.get("/:id", authMiddleware(["ADMIN", "DOCTOR", "PATIENT"]),appointmentController.getAppointmentById);
 
-module.exports = router;
 
+
+module.exports = router;
 

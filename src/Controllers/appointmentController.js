@@ -70,7 +70,7 @@ exports.createappointment = async (req, res, next) => {
 
 exports.cancelappointment = async (req,res,next) => {
     try {
-        await prisma.appointment.delete({where : {id : Number(req.params.id)}});
+        await prisma.appointment.delete({where : {id : req.params.id }});
         logger.info({ appointmentId: req.params.id }, "🗑️ Appointment cancelled");
         res.json({ message: "Appointment cancelled" });
     } catch (error) {
@@ -101,7 +101,7 @@ exports.getAllAppointment = async (req,res,next) => {
 exports.getAppointmentById = async (req, res, next) => {
   try {
     const appointment = await prisma.appointment.findUnique({
-      where: { id: Number(req.params.id) },
+      where: { id: req.params.id },
       include: { doctor: true, patient: true }
     });
 

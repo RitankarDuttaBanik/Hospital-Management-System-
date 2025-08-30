@@ -42,7 +42,7 @@ exports.getAllDoctors = async (req,res,next) => {
 
 exports.getDoctorsById = async (req,res,next) => {
     try {
-    const doctor = await prisma.doctor.findUnique({ where: { id: Number(req.params.id) } });
+    const doctor = await prisma.doctor.findUnique({ where: { id: req.params.id } });
     if (!doctor) {
       logger.warn({ doctorId: req.params.id }, "🚫 Doctor not found");
       return res.status(404).json({ error: "Doctor not found" });
@@ -57,9 +57,9 @@ exports.UpdateDoctor = async (req,res,next) => {
     try {
         const doctor = await prisma.doctor.update({
             where : {
-                id : Number(req.params.id)
-            },
-            data : req.body
+                id : req.params.id 
+              },
+                data : req.body
         });
 
         logger.info({ doctorId: doctor.id }, "✏️ Doctor updated");
@@ -72,7 +72,7 @@ exports.UpdateDoctor = async (req,res,next) => {
 
 exports.deleteDoctor = async (req, res, next) => {
   try {
-    await prisma.doctor.delete({ where: { id: Number(req.params.id) } });
+    await prisma.doctor.delete({ where: { id: req.params.id } });
     logger.info({ doctorId: req.params.id }, "🗑️ Doctor deleted");
     res.json({ message: "Doctor deleted" });
   } catch (err) {
@@ -89,7 +89,7 @@ exports.getDoctorAvailability = async (req, res, next) => {
       return res.status(400).json({ error: "Date query param is required" });
     }
 
-    const doctor = await prisma.doctor.findUnique({ where: { id: Number(id) } });
+    const doctor = await prisma.doctor.findUnique({ where: { id: id } });
     if (!doctor) {
       return res.status(404).json({ error: "Doctor not found" });
     }
