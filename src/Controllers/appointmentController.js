@@ -5,21 +5,21 @@ exports.createappointment = async (req, res, next) => {
   try {
     const { doctorId, patientId, startTime, endTime, reason } = req.body;
 
-    // ✅ Ensure doctor exists
+    //  Ensure doctor exists
     const doctor = await prisma.doctor.findUnique({ where: { id: doctorId } });
     if (!doctor) {
       logger.warn({ doctorId }, "🚫 Doctor not found");
       return res.status(400).json({ error: "Doctor not found" });
     }
 
-    // ✅ Ensure patient exists
+    //  Ensure patient exists
     const patient = await prisma.patient.findUnique({ where: { id: patientId } });
     if (!patient) {
       logger.warn({ patientId }, "🚫 Patient not found");
       return res.status(400).json({ error: "Patient not found" });
     }
 
-    // ✅ Prevent overlapping appointments for the doctor
+    //  Prevent overlapping appointments for the doctor
     const overlapping = await prisma.appointment.findFirst({
       where: {
         doctorId,
